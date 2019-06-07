@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for wizyta in wizyty.items %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{ url_for('pacjenci.wizyty_pacjenta', pesel=wizyta.dane_pacjenta.pesel) }}">{{ wizyta.dane_pacjenta.id }}</a>
+              <small class="text-muted">{{ wizyta.data_wizyty.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('wizyty.wizyta', wizyta_id=wizyta.id) }}">{{ wizyta.kategoria }}</a></h2>
+            <p class="article-content">{{ wizyta.nazwa_wizyty }}</p>
+          </div>
+        </article>
+    {% endfor %}
+    {% for page_num in wizyty.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if wizyty.page == page_num %}
+          <a class="btn btn-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ numer_strony }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+{% endblock content %}
